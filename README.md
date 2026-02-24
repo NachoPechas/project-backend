@@ -1,71 +1,81 @@
-# 🧠 Backend - NachoPechas
-
-> ⚠️ Estado actual: Proyecto en fase de planeación (Por definir)
-
-Este repositorio contiene el desarrollo del **backend** del proyecto.  
-Actualmente estamos definiendo la arquitectura, tecnologías y lineamientos de implementación del sistema.
+Nice — here’s your README translated to English **keeping the exact same structure, spacing, and design** 👇
 
 ---
 
-## 📁 Estructura del Proyecto
+# 🧠 Backend - NachoPechas
+
+> ⚠️ Current Status: Project in planning phase (To be defined)
+
+This repository contains the development of the project’s **backend**.
+We are currently defining the system’s architecture, technologies, and implementation guidelines.
+
+---
+
+## 📁 Project Structure
+
 ```bash
 ├── .gitignore
 ├── README.md
 ├── src
-│ └── ... (código fuente del backend: dominios, servicios, controladores, etc.)
+│ └── ... (backend source code: domains, services, controllers, etc.)
 ├── tests
-│ └── ... (pruebas unitarias / de integración)
+│ └── ... (unit / integration tests)
 ├── scripts
-│ └── ... (scripts de inicialización BD, seeds, etc. si no están en el repo de docs)
+│ └── ... (DB initialization scripts, seeds, etc. if not included in the docs repo)
 └── docs
-└── ... (documentación técnica específica del backend, opcional)
+└── ... (backend-specific technical documentation, optional)
 ```
----
-
-## 🚀 Objetivo
-
-Construir la lógica de negocio del sistema, asegurando:
-
-- Separación de responsabilidades
-- Escalabilidad de la arquitectura
-- Seguridad en el manejo de datos
-- Integración eficiente con el frontend
-- Código mantenible y testeable
 
 ---
 
-## 🛠️ Tecnologías
+## 🚀 Objective
 
-🔎 Por definir
+Build the system’s business logic, ensuring:
 
-Se evaluarán herramientas según los requerimientos del proyecto.
+* Separation of responsibilities
+* Scalable architecture
+* Secure data handling
+* Efficient frontend integration
+* Maintainable and testable code
 
 ---
 
-## ⚙️ Instalación
+## 🛠️ Technologies
 
-_Instrucciones disponibles próximamente._
+🔎 To be defined
+
+Tools will be evaluated according to the project requirements.
+
+---
+
+## ⚙️ Installation
+
+*Instructions coming soon.*
 
 ---
 
 ## 🧪 Testing
 
-_Estrategia de pruebas por definir._
+*Testing strategy to be defined.*
 
 ---
 
-## 📚 Documentación
+## 📚 Documentation
 
-La documentación técnica específica del backend estará disponible en la carpeta `/docs`.
-
----
-
-## 📌 Estado del Proyecto
-
-En fase de planificación y definición de requerimientos.
+Backend-specific technical documentation will be available in the `/docs` folder.
 
 ---
 
-## 👥 Equipo
+## 📌 Project Status
 
-Proyecto desarrollado como parte del curso de Ingeniería de Software.
+In the planning and requirements definition phase.
+
+---
+
+## 👥 Team
+
+Project developed as part of the Software Engineering course.
+
+---
+
+
