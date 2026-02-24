@@ -1,52 +1,35 @@
-
-
----
-
-````markdown
-# ⚙️ Backend - NachoPechas
+# 🧠 Backend - [Nombre del Proyecto]
 
 > ⚠️ Estado actual: Proyecto en fase de planeación (Por definir)
 
-Este repositorio contiene la implementación del **backend** del sistema.
-
-Actualmente el equipo se encuentra en la fase de planificación, definiendo:
-
-- Arquitectura del sistema
-- Stack tecnológico
-- Modelo de datos
-- Servicios y lógica de negocio
-- Estrategia de testing
+Este repositorio contiene el desarrollo del **backend** del proyecto.  
+Actualmente estamos definiendo la arquitectura, tecnologías y lineamientos de implementación del sistema.
 
 ---
 
 ## 📁 Estructura del Proyecto
-
-```bash
 ├── .gitignore
 ├── README.md
 ├── src
-│   └── ... (código fuente del backend: dominios, servicios, controladores, etc.)
+│ └── ... (código fuente del backend: dominios, servicios, controladores, etc.)
 ├── tests
-│   └── ... (pruebas unitarias / de integración)
+│ └── ... (pruebas unitarias / de integración)
 ├── scripts
-│   └── ... (scripts de inicialización BD, seeds, etc. si no están en el repo de docs)
+│ └── ... (scripts de inicialización BD, seeds, etc. si no están en el repo de docs)
 └── docs
-    └── ... (documentación técnica específica del backend, opcional)
-````
+└── ... (documentación técnica específica del backend, opcional)
 
 ---
 
 ## 🚀 Objetivo
 
-Desarrollar la lógica de negocio del sistema y proveer los servicios necesarios para la comunicación con el frontend mediante APIs.
+Construir la lógica de negocio del sistema, asegurando:
 
-Se busca garantizar:
-
-* Escalabilidad
-* Seguridad
-* Modularidad
-* Mantenibilidad
-* Buenas prácticas de desarrollo
+- Separación de responsabilidades
+- Escalabilidad de la arquitectura
+- Seguridad en el manejo de datos
+- Integración eficiente con el frontend
+- Código mantenible y testeable
 
 ---
 
@@ -54,46 +37,34 @@ Se busca garantizar:
 
 🔎 Por definir
 
-Las tecnologías y frameworks serán definidos durante la fase de diseño del sistema.
+Se evaluarán herramientas según los requerimientos del proyecto.
 
 ---
 
 ## ⚙️ Instalación
 
-*Instrucciones disponibles próximamente.*
+_Instrucciones disponibles próximamente._
 
 ---
 
 ## 🧪 Testing
 
-La estrategia de pruebas será definida para cubrir:
+_Estrategia de pruebas por definir._
 
-* Pruebas unitarias
-* Pruebas de integración
-* Validación de endpoints
+---
+
+## 📚 Documentación
+
+La documentación técnica específica del backend estará disponible en la carpeta `/docs`.
 
 ---
 
 ## 📌 Estado del Proyecto
 
-En fase de planificación y levantamiento de requerimientos.
+En fase de planificación y definición de requerimientos.
 
 ---
 
-## 👥 Equipo de Desarrollo
+## 👥 Equipo
 
 Proyecto desarrollado como parte del curso de Ingeniería de Software.
-
-```
-
----
-
-Si después definen si el backend será con Flask, Express, Spring, etc., te hago otro README con:
-
-- Cómo correr el servidor  
-- Variables de entorno `.env`  
-- Conexión a base de datos  
-- Endpoints base  
-
-para que cualquier dev clone y corra el proyecto sin preguntar nada 🚀
-```
