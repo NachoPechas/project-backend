@@ -1,4 +1,4 @@
-# 🧠 Backend - [Nombre del Proyecto]
+# 🧠 Backend - NachoPechas
 
 > ⚠️ Estado actual: Proyecto en fase de planeación (Por definir)
 
@@ -8,6 +8,7 @@ Actualmente estamos definiendo la arquitectura, tecnologías y lineamientos de i
 ---
 
 ## 📁 Estructura del Proyecto
+```bash
 ├── .gitignore
 ├── README.md
 ├── src
@@ -18,7 +19,7 @@ Actualmente estamos definiendo la arquitectura, tecnologías y lineamientos de i
 │ └── ... (scripts de inicialización BD, seeds, etc. si no están en el repo de docs)
 └── docs
 └── ... (documentación técnica específica del backend, opcional)
-
+```
 ---
 
 ## 🚀 Objetivo
