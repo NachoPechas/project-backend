@@ -25,7 +25,7 @@ CREATE TABLE time_slot (
   end_time TIME
 );
 
-CREATE TABLE userr (
+CREATE TABLE user (
   id INTEGER PRIMARY KEY,
   name VARCHAR(255),
   role_id INTEGER, 
