@@ -1,0 +1,30 @@
+{
+  "name": "project-backend",
+  "version": "1.0.0",
+  "description": "Backend of Encarta Libary app",
+  "homepage": "https://github.com/NachoPechas/project-backend#readme",
+  "bugs": {
+    "url": "https://github.com/NachoPechas/project-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NachoPechas/project-backend.git"
+  },
+  "license": "ISC",
+  "author": "NachoPechas",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.20.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
+  }
+}

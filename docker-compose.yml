@@ -1,0 +1,55 @@
+# docker-compose.yml
+version: '3.9'
+
+services:
+
+  # ── Servicio 1: Base de datos PostgreSQL ──
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      # solo variables de entorno aquí
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      # al mismo nivel que environment
+      - '5432:5432'
+    volumes:
+      # al mismo nivel que environment
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # al mismo nivel que environment
+      test: [ 'CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Servicio 2: Backend Express ──
+  backend:
+    build:
+      #context: ./backend # indentado dentro de build
+      context: . # indentado dentro de build
+      dockerfile: Dockerfile # indentado dentro de build
+    container_name: express_api
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: db # indentado dentro de environment
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # descomentado — útil en desarrollo
+      - ./backend:/app
+      - /app/node_modules
+
+volumes:
+  pgdata: # sin nombre extra, solo la clave
