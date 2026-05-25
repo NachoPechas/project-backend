@@ -1,4 +1,4 @@
-Nice — here’s your README translated to English **keeping the exact same structure, spacing, and design** 👇
+
 
 ---
 
