@@ -15,7 +15,7 @@ CREATE TABLE book (
 
 CREATE TABLE study_seat (
   id INTEGER PRIMARY KEY,
-  status VARCHAR(50),
+  status VARCHAR(50) DEFAULT 'Disponible',
   location_details TEXT,
   computers INT
 );
@@ -30,8 +30,8 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY,
   name VARCHAR(255),
   role_id INTEGER, 
-  email VARCHAR(255),
-  status VARCHAR(50),
+  email VARCHAR(255) UNIQUE,
+  status VARCHAR(50) DEFAULT 'Activo',
   CONSTRAINT fk_user_role FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE item (
   book_id INTEGER, 
   description TEXT,
   physical_condition VARCHAR(100),
-  availability_status VARCHAR(50),
+  availability_status VARCHAR(50) DEFAULT 'Disponible',
   CONSTRAINT fk_item_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE loan (
   id INTEGER PRIMARY KEY,
   user_id INTEGER,
   item_id INTEGER,
-  loan_date DATE,
+  loan_date DATE DEFAULT CURRENT_DATE,
   due_date DATE,
   return_date DATE,
   initial_condition VARCHAR(100),
@@ -62,8 +62,8 @@ CREATE TABLE seat_reservation (
   user_id INTEGER,
   seat_id INTEGER,
   slot_id INTEGER,
-  reservation_date DATE,
-  status VARCHAR(50),
+  reservation_date DATE DEFAULT CURRENT_DATE,
+  status VARCHAR(50)DEFAULT 'Activa' ,
   CONSTRAINT fk_res_user FOREIGN KEY (user_id) REFERENCES user(id),
   CONSTRAINT fk_res_seat FOREIGN KEY (seat_id) REFERENCES study_seat(id),
   CONSTRAINT fk_res_slot FOREIGN KEY (slot_id) REFERENCES time_slot(id)
@@ -73,8 +73,8 @@ CREATE TABLE notification (
     user_id INT,
     message TEXT,
     type VARCHAR(50),
-    sent_date DATETIME,
-    status VARCHAR(50),
+    sent_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'Pendiente',
     CONSTRAINT fk_notification_user FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
@@ -84,8 +84,8 @@ CREATE TABLE penalty (
     loan_id INT,
     amount DECIMAL(10,2),
     reason TEXT,
-    status VARCHAR(50),
-    created_date DATE,
+    status VARCHAR(50) DEFAULT 'Pendiente',
+    created_date DATE DEFAULT CURRENT_DATE,
   CONSTRAINT fk_penalty_user FOREIGN KEY (user_id) REFERENCES user(id),
   CONSTRAINT fk_penalty_loan FOREIGN KEY (loan_id) REFERENCES loan(id)
 );
