@@ -68,6 +68,27 @@ CREATE TABLE seat_reservation (
   CONSTRAINT fk_res_seat FOREIGN KEY (seat_id) REFERENCES study_seat(id),
   CONSTRAINT fk_res_slot FOREIGN KEY (slot_id) REFERENCES time_slot(id)
 );
+CREATE TABLE notification (
+    id INT PRIMARY KEY,
+    user_id INT,
+    message TEXT,
+    type VARCHAR(50),
+    sent_date DATETIME,
+    status VARCHAR(50),
+    CONSTRAINT fk_notification_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE penalty (
+    id INT PRIMARY KEY,
+    user_id INT,
+    loan_id INT,
+    amount DECIMAL(10,2),
+    reason TEXT,
+    status VARCHAR(50),
+    created_date DATE,
+  CONSTRAINT fk_penalty_user FOREIGN KEY (user_id) REFERENCES user(id),
+  CONSTRAINT fk_penalty_loan FOREIGN KEY (loan_id) REFERENCES loan(id)
+);
 =======
 CREATE TABLE role (
   id INTEGER PRIMARY KEY,
