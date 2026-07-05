@@ -1,0 +1,64 @@
+const { DataTypes, Model } = require('sequelize');
+const sequelize = require('../config/database');
+const User = require('./user'); 
+const StudySeat = require('./studySeat'); 
+
+class SeatReservation extends Model {}
+
+SeatReservation.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
+    },
+    seat_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'study_seat',
+        key: 'id',
+      },
+    },
+    slot_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    reservation_date: {
+      type: DataTypes.DATEONLY,
+      defaultValue: DataTypes.NOW,
+    },
+    status: {
+      type: DataTypes.STRING(50),
+      defaultValue: 'Activa',
+    },
+  },
+  {
+    sequelize,
+    modelName: 'SeatReservation',
+    tableName: 'seat_reservation',
+    timestamps: false,           
+  }
+);
+
+// ==========================================
+// DEFINICIÓN DE RELACIONES (ASOCIACIONES)
+// ==========================================
+
+// Relación con Usuarios: Una reservación pertenece a un Usuario (alumno)
+SeatReservation.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasMany(SeatReservation, { foreignKey: 'user_id', as: 'reservations' });
+
+// Relación con Puestos: Una reservación pertenece a un puesto específico
+SeatReservation.belongsTo(StudySeat, { foreignKey: 'seat_id', as: 'seat' });
+StudySeat.hasMany(SeatReservation, { foreignKey: 'seat_id', as: 'reservations' });
+
+module.exports = SeatReservation;
