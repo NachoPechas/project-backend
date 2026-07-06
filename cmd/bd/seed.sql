@@ -1,140 +1,86 @@
-<<<<<<< HEAD
 
-INSERT INTO role (id, name, description) VALUES 
-(1, 'Administrador' ,' Administrador General'),
-(2, 'Bibliotecario', 'Gestor de préstamos y devoluciones, actualización de ejemplares y gestión operativa de penalizaciones.'),
-(3, 'Estudiante', 'Usuario final. Consulta de catálogo, historial personal, reserva de puestos de estudio y préstamos.');
-=======
+INSERT INTO role(name,description) VALUES
+('Administrador','Acceso total'),
+('Bibliotecario','Gestiona préstamos'),
+('Estudiante','Usuario final');
 
-INSERT INTO role (id, name, description) VALUES 
-(1, 'Administrador' ,' Administrador General'),
-(2, 'Bibliotecario', 'Gestor de préstamos y devoluciones, actualización de ejemplares y gestión operativa de penalizaciones.'),
-(3, 'Estudiante', 'Usuario final. Consulta de catálogo, historial personal, reserva de puestos de estudio y préstamos.');
->>>>>>> 3cb6c85 (Docker integratios with initial Backend service)
+INSERT INTO book(title,author,category,publication_year) VALUES
+('Clean Code','Robert C. Martin','Software',2008),
+('Introduction to Algorithms','Thomas H. Cormen','Algoritmos',2022),
+('Design Patterns','Gang of Four','Software',1994),
+('The Pragmatic Programmer','Andrew Hunt','Software',1999),
+('Artificial Intelligence','Stuart Russell','IA',2021),
+('Database System Concepts','Silberschatz','Bases de Datos',2020),
+('Computer Networks','Andrew Tanenbaum','Redes',2019),
+('Operating System Concepts','Silberschatz','Sistemas Operativos',2021);
 
-DELIMITER $$
-CREATE TRIGGER trg_item_loan
-AFTER INSERT ON loan
-FOR EACH ROW
-BEGIN
-    UPDATE item
-    SET availability_status = 'Prestado'
-    WHERE id = NEW.item_id;
-END$$
-
-CREATE TRIGGER trg_item_return
-AFTER UPDATE ON loan
-FOR EACH ROW
-BEGIN
-    IF NEW.return_date IS NOT NULL THEN
-        UPDATE item
-        SET availability_status = 'Disponible'
-        WHERE id = NEW.item_id;
-    END IF;
-END$$
-
-CREATE TRIGGER trg_damaged_item
-AFTER UPDATE ON item
-FOR EACH ROW
-BEGIN
-    IF NEW.physical_condition = 'Dañado' THEN
-        UPDATE item
-        SET availability_status = 'Mantenimiento'
-        WHERE id = NEW.id;
-    END IF;
-END$$
-
-CREATE TRIGGER trg_seat_reserved
-AFTER INSERT ON seat_reservation
-FOR EACH ROW
-BEGIN
-    UPDATE study_seat
-    SET status = 'Ocupado'
-    WHERE id = NEW.seat_id;
-END$$
-
-CREATE TRIGGER trg_seat_available
-AFTER UPDATE ON seat_reservation
-FOR EACH ROW
-BEGIN
-    IF NEW.status = 'Cancelada' OR NEW.status = 'Finalizada' THEN
-        UPDATE study_seat
-        SET status = 'Disponible'
-        WHERE id = NEW.seat_id;
-    END IF;
-END$$
-
-CREATE TRIGGER trg_late_return
-AFTER UPDATE ON loan
-FOR EACH ROW
-BEGIN
-    IF NEW.return_date > NEW.due_date THEN
-        INSERT INTO penalty(
-            user_id,
-            loan_id,
-            amount,
-            reason,
-            status,
-            created_date
-        )
-        VALUES(
-            NEW.user_id,
-            NEW.id,
-            5000,
-            'Entrega tardía del ejemplar',
-            'Pendiente',
-            CURRENT_DATE
-        );
-    END IF;
-END$$
-
-CREATE TRIGGER trg_user_lock
-AFTER UPDATE ON user
-FOR EACH ROW
-BEGIN
-    IF NEW.failed_attempts >= 5 THEN
-        UPDATE user
-        SET status = 'Bloqueado'
-        WHERE id = NEW.id;
-    END IF;
-END$$
-
-CREATE TRIGGER trg_penalty_notification
-AFTER INSERT ON penalty
-FOR EACH ROW
-BEGIN
-    INSERT INTO notification(
-        user_id,
-        message,
-        type,
-        sent_date,
-        status
-    )
-    VALUES(
-        NEW.user_id,
-        'Se ha generado una penalización en tu cuenta',
-        'Penalización',
-        CURRENT_TIMESTAMP,
-        'Enviado'
-    );
-END$$
+INSERT INTO time_slot(start_time,end_time) VALUES
+('08:00','10:00'),
+('10:00','12:00'),
+('12:00','14:00'),
+('14:00','16:00'),
+('16:00','18:00');
 
 
-DELIMITER ;
+INSERT INTO usuarios(nombre,role_id,email,activo,rol,"proveedorAuth","createdAt","updatedAt") VALUES
+('Tomás Angarita',3,'tangaritac@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Laura Gómez',2,'lgomez@unal.edu.co',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Carlos Rodríguez',1,'crodriguez@unal.edu.co',TRUE,'administrador','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('María Pérez',3,'mperez@unal.edu.co',TRUE,'estudiante','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Juan López',3,'jlopez@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Ana Torres',3,'atorres@unal.edu.co',TRUE,'estudiante','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Felipe Díaz',2,'fdiaz@unal.edu.co',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Sofía Ramírez',3,'sramirez@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 
-CREATE UNIQUE INDEX idx_user_email ON user(email);
+INSERT INTO study_seat(status,location_details,computers,tiempo_restante) VALUES
+('Disponible','Piso 1 - A1',1,0),
+('Disponible','Piso 1 - A2',0,0),
+('Disponible','Piso 2 - B1',1,0),
+('Ocupado','Piso 2 - B2',1,45),
+('Disponible','Piso 3 - C1',0,0),
+('Mantenimiento','Piso 3 - C2',1,0),
+('Ocupado','Piso 1 - A3',0,20),
+('Disponible','Piso 2 - B3',1,0);
 
-CREATE INDEX idx_book_title ON book(title);
-CREATE INDEX idx_book_author ON book(author);
-CREATE INDEX idx_book_category ON book(category);
 
-CREATE INDEX idx_loan_user ON loan(user_id);
+INSERT INTO item(book_id,description,physical_condition,availability_status) VALUES
+(1,'Ejemplar A','Excelente','Disponible'),
+(1,'Ejemplar B','Bueno','Prestado'),
+(2,'Ejemplar A','Excelente','Disponible'),
+(3,'Ejemplar A','Bueno','Disponible'),
+(4,'Ejemplar A','Excelente','Disponible'),
+(5,'Ejemplar A','Bueno','Prestado'),
+(6,'Ejemplar A','Excelente','Disponible'),
+(7,'Ejemplar A','Regular','Disponible'),
+(8,'Ejemplar A','Excelente','Disponible');
 
-CREATE INDEX idx_reservation_check
-ON seat_reservation(seat_id, reservation_date, slot_id);
 
-CREATE INDEX idx_notification_user ON notification(user_id);
+INSERT INTO loan(user_id,item_id,loan_date,due_date,initial_condition,final_condition) VALUES
+(1,2,CURRENT_DATE,CURRENT_DATE+7,'Bueno',NULL),
+(4,6,CURRENT_DATE-2,CURRENT_DATE+5,'Bueno',NULL),
+(5,3,CURRENT_DATE-5,CURRENT_DATE+2,'Excelente',NULL),
+(6,4,CURRENT_DATE-1,CURRENT_DATE+6,'Bueno',NULL);
 
-CREATE INDEX idx_penalty_user ON penalty(user_id);
+INSERT INTO seat_reservation(user_id,seat_id,slot_id,reservation_date,status) VALUES
+(2,1,1,CURRENT_DATE,'Activa'),
+(3,4,2,CURRENT_DATE,'Activa'),
+(4,5,3,CURRENT_DATE,'Activa'),
+(5,2,4,CURRENT_DATE,'Finalizada'),
+(6,8,5,CURRENT_DATE,'Activa');
 
-CREATE INDEX idx_item_book ON item(book_id);
+
+INSERT INTO notification(user_id,message,type,sent_date,status) VALUES
+(1,'Reserva confirmada','Reserva',CURRENT_TIMESTAMP,'Enviada'),
+(2,'Libro próximo a vencer','Préstamo',CURRENT_TIMESTAMP,'Enviada'),
+(3,'Su reserva fue aprobada','Reserva',CURRENT_TIMESTAMP,'Enviada'),
+(4,'Debe devolver un libro mañana','Préstamo',CURRENT_TIMESTAMP,'Pendiente'),
+(5,'Nueva multa registrada','Multa',CURRENT_TIMESTAMP,'Enviada'),
+(6,'Puesto disponible nuevamente','Reserva',CURRENT_TIMESTAMP,'Enviada'),
+(7,'Préstamo realizado con éxito','Préstamo',CURRENT_TIMESTAMP,'Enviada');
+
+
+INSERT INTO penalty(user_id,loan_id,amount,reason,status,created_date) VALUES
+(1,1,5000,'Entrega tardía','Pendiente',CURRENT_DATE),
+(4,2,8000,'Daño menor al libro','Pagada',CURRENT_DATE-3),
+(5,3,12000,'Pérdida del libro','Pendiente',CURRENT_DATE-5),
+(6,4,3000,'Entrega fuera de tiempo','Pagada',CURRENT_DATE-1);
