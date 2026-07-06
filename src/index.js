@@ -5,9 +5,11 @@ require('./models/user');
 require('./models/studySeat');
 require('./models/seatReservation'); 
 require('./models/book');
+require('./models/item');
 const usuariosRouter = require('./routes/user');
 const puestosRouter = require('./routes/studySeat');
 const librosRouter = require('./routes/book');
+const itemsRouter = require('./routes/item');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json()); 
@@ -29,6 +31,7 @@ timestamp: new Date().toISOString()
 app.use('/api/users', usuariosRouter);
 app.use('/api/seats', puestosRouter);
 app.use('/api/books', librosRouter);
+app.use('/api/items', itemsRouter);
 async function iniciar() {
   try {
 await sequelize.authenticate();
