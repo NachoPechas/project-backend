@@ -28,9 +28,9 @@ User.init(
     role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 3, // Por defecto entra como Estudiante (id: 3)
+      defaultValue: 3,
       references: {
-        model: 'role', // Hace referencia a la tabla 'role' del init.sql
+        model: 'role', 
         key: 'id',
       }
     },
