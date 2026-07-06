@@ -26,61 +26,60 @@ CREATE TABLE time_slot (
   end_time TIME
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE user (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(255),
+  name VARCHAR(255),
   role_id INTEGER REFERENCES role(id),
   email VARCHAR(255) UNIQUE,
-  activo BOOLEAN DEFAULT TRUE,
-  rol VARCHAR(30) DEFAULT 'estudiante',
-  "proveedorAuth" VARCHAR(20) DEFAULT 'local',
-  "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  status VARCHAR(50) DEFAULT 'Activo',
+  provider_auth VARCHAR(20) DEFAULT 'local',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE item (
- id SERIAL PRIMARY KEY,
- book_id INTEGER REFERENCES book(id),
- description TEXT,
- physical_condition VARCHAR(100),
- availability_status VARCHAR(50) DEFAULT 'Disponible'
+  id SERIAL PRIMARY KEY,
+  book_id INTEGER REFERENCES book(id),
+  description TEXT,
+  physical_condition VARCHAR(100),
+  availability_status VARCHAR(50) DEFAULT 'Disponible'
 );
 
-CREATE TABLE loan(
- id SERIAL PRIMARY KEY,
- user_id INTEGER REFERENCES usuarios(id),
- item_id INTEGER REFERENCES item(id),
- loan_date DATE DEFAULT CURRENT_DATE,
- due_date DATE,
- return_date DATE,
- initial_condition VARCHAR(100),
- final_condition VARCHAR(100)
+CREATE TABLE loan (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES user(id),
+  item_id INTEGER REFERENCES item(id),
+  loan_date DATE DEFAULT CURRENT_DATE,
+  due_date DATE,
+  return_date DATE,
+  initial_condition VARCHAR(100),
+  final_condition VARCHAR(100)
 );
 
-CREATE TABLE seat_reservation(
- id SERIAL PRIMARY KEY,
- user_id INTEGER REFERENCES usuarios(id),
- seat_id INTEGER REFERENCES study_seat(id),
- slot_id INTEGER REFERENCES time_slot(id),
- reservation_date DATE DEFAULT CURRENT_DATE,
- status VARCHAR(50) DEFAULT 'Activa'
+CREATE TABLE seat_reservation (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES user(id),
+  seat_id INTEGER REFERENCES study_seat(id),
+  slot_id INTEGER REFERENCES time_slot(id),
+  reservation_date DATE DEFAULT CURRENT_DATE,
+  status VARCHAR(50) DEFAULT 'Activa'
 );
 
-CREATE TABLE notification(
- id SERIAL PRIMARY KEY,
- user_id INTEGER REFERENCES usuarios(id),
- message TEXT,
- type VARCHAR(50),
- sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- status VARCHAR(50) DEFAULT 'Pendiente'
+CREATE TABLE notification (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES user(id),
+  message TEXT,
+  type VARCHAR(50),
+  sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(50) DEFAULT 'Pendiente'
 );
 
-CREATE TABLE penalty(
- id SERIAL PRIMARY KEY,
- user_id INTEGER REFERENCES usuarios(id),
- loan_id INTEGER REFERENCES loan(id),
- amount NUMERIC(10,2),
- reason TEXT,
- status VARCHAR(50) DEFAULT 'Pendiente',
- created_date DATE DEFAULT CURRENT_DATE
+CREATE TABLE penalty (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES user(id),
+  loan_id INTEGER REFERENCES loan(id),
+  amount NUMERIC(10,2),
+  reason TEXT,
+  status VARCHAR(50) DEFAULT 'Pendiente',
+  created_date DATE DEFAULT CURRENT_DATE
 );

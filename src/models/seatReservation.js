@@ -29,9 +29,9 @@ SeatReservation.init(
       type: DataTypes.DATEONLY,
       defaultValue: DataTypes.NOW,
     },
-    status: {
-      type: DataTypes.STRING(50),
-      defaultValue: 'Activa',
+    status: { 
+      type: DataTypes.STRING(50), 
+      defaultValue: 'Activa' 
     },
   },
   {
@@ -42,20 +42,12 @@ SeatReservation.init(
   }
 );
 
-User.hasMany(SeatReservation, {
-  foreignKey: 'user_id',
-});
+// Relaciones con Usuarios
+SeatReservation.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasMany(SeatReservation, { foreignKey: 'user_id', as: 'reservations' });
 
-SeatReservation.belongsTo(User, {
-  foreignKey: 'user_id',
-});
-
-StudySeat.hasMany(SeatReservation, {
-  foreignKey: 'seat_id',
-});
-
-SeatReservation.belongsTo(StudySeat, {
-  foreignKey: 'seat_id',
-});
+// Relaciones con Puestos
+SeatReservation.belongsTo(StudySeat, { foreignKey: 'seat_id', as: 'seat' });
+StudySeat.hasMany(SeatReservation, { foreignKey: 'seat_id', as: 'reservations' });
 
 module.exports = SeatReservation;
