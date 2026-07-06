@@ -22,15 +22,15 @@ INSERT INTO time_slot(start_time,end_time) VALUES
 ('16:00','18:00');
 
 
-INSERT INTO usuarios(nombre,role_id,email,activo,rol,"proveedorAuth","createdAt","updatedAt") VALUES
-('Tomás Angarita',3,'tangaritac@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Laura Gómez',2,'lgomez@gmail.com',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Carlos Rodríguez',1,'crodriguez@unal.edu.co',TRUE,'administrador','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('María Pérez',3,'mperez@unal.edu.co',TRUE,'estudiante','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Juan López',3,'jlopez@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Ana Torres',3,'atorres@unal.edu.co',TRUE,'estudiante','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Felipe Díaz',2,'fdiaz@unal.edu.co',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Sofía Ramírez',3,'sramirez@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+INSERT INTO user (name, role_id, email, status, provider_auth, created_at, updated_at) VALUES
+('Tomás Angarita', 3, 'tangaritac@unal.edu.co', 'Activo', 'google', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Laura Gómez', 2, 'lgomez@gmail.com', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Carlos Rodríguez', 1, 'crodriguez@unal.edu.co', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('María Pérez', 3, 'mperez@unal.edu.co', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Juan López', 3, 'jlopez@unal.edu.co', 'Activo', 'google', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Ana Torres', 3, 'atorres@unal.edu.co', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Felipe Díaz', 2, 'fdiaz@unal.edu.co', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Sofía Ramírez', 3, 'sramirez@unal.edu.co', 'Activo', 'google', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO study_seat(status,location_details,computers,tiempo_restante) VALUES
 ('Disponible','Piso 1 - A1',1,0),
