@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/usuarios/:id → obtener uno por id
 router.get('/:id', async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
@@ -23,18 +22,16 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/usuarios → crear nuevo usuario
 router.post('/', async (req, res) => {
   try {
-    const { nombre, email } = req.body;
-    const nuevo = await Usuario.create({ nombre, email });
+    const { name, email } = req.body;
+    const nuevo = await Usuario.create({ name, email });
     res.status(201).json({ ok: true, data: nuevo });
   } catch (err) {
     res.status(400).json({ ok: false, mensaje: err.message });
   }
 });
 
-// PUT /api/usuarios/:id → actualizar usuario
 router.put('/:id', async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
@@ -46,7 +43,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/usuarios/:id → eliminar usuario
 router.delete('/:id', async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);

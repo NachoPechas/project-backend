@@ -4,7 +4,10 @@ const sequelize = require('./config/database');
 require('./models/user');
 require('./models/studySeat');
 require('./models/seatReservation'); 
+require('./models/book');
 const usuariosRouter = require('./routes/user');
+const puestosRouter = require('./routes/studySeat');
+const librosRouter = require('./routes/book');
 const app = express();
 const PORT = process.env.PORT || 3000;
 // Middlewares globales
@@ -28,6 +31,8 @@ timestamp: new Date().toISOString()
 });
 // ■■ Rutas de la API ■■
 app.use('/api/usuarios', usuariosRouter);
+app.use('/api/puestos', puestosRouter);
+app.use('/api/libros', librosRouter);
 // ■■ Arranque: conectar BD → sincronizar modelos → levantar servidor ■■
 async function iniciar() {
   try {

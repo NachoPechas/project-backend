@@ -84,7 +84,7 @@ async function actualizarContadoresTiempo() {
         
         await SeatReservation.update(
           { status: 'Finalizada' },
-          { where: { seat_id: puestosOcupados.id, status: 'Activa' } }
+          { where: { seat_id: puesto.id, status: 'Activa' } }
         );
       }
 

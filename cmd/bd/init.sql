@@ -26,7 +26,7 @@ CREATE TABLE time_slot (
   end_time TIME
 );
 
-CREATE TABLE user (
+CREATE TABLE "user" (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
   role_id INTEGER REFERENCES role(id),
@@ -47,7 +47,7 @@ CREATE TABLE item (
 
 CREATE TABLE loan (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES user(id),
+  user_id INTEGER REFERENCES "user"(id),
   item_id INTEGER REFERENCES item(id),
   loan_date DATE DEFAULT CURRENT_DATE,
   due_date DATE,
@@ -58,7 +58,7 @@ CREATE TABLE loan (
 
 CREATE TABLE seat_reservation (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES user(id),
+  user_id INTEGER REFERENCES "user"(id),
   seat_id INTEGER REFERENCES study_seat(id),
   slot_id INTEGER REFERENCES time_slot(id),
   reservation_date DATE DEFAULT CURRENT_DATE,
@@ -67,7 +67,7 @@ CREATE TABLE seat_reservation (
 
 CREATE TABLE notification (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES user(id),
+  user_id INTEGER REFERENCES "user"(id),
   message TEXT,
   type VARCHAR(50),
   sent_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -76,7 +76,7 @@ CREATE TABLE notification (
 
 CREATE TABLE penalty (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES user(id),
+  user_id INTEGER REFERENCES "user"(id),
   loan_id INTEGER REFERENCES loan(id),
   amount NUMERIC(10,2),
   reason TEXT,

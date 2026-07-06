@@ -22,7 +22,7 @@ INSERT INTO time_slot(start_time,end_time) VALUES
 ('16:00','18:00');
 
 
-INSERT INTO user (name, role_id, email, status, provider_auth, created_at, updated_at) VALUES
+INSERT INTO "user" (name, role_id, email, status, provider_auth, created_at, updated_at) VALUES
 ('Tomás Angarita', 3, 'tangaritac@unal.edu.co', 'Activo', 'google', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Laura Gómez', 2, 'lgomez@gmail.com', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Carlos Rodríguez', 1, 'crodriguez@unal.edu.co', 'Activo', 'local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
