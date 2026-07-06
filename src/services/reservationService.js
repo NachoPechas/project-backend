@@ -99,13 +99,3 @@ module.exports = {
   agendarPuesto,
   actualizarContadoresTiempo
 };
-
-// =========================================================================
-// 🚀 PRUEBA DE EJECUCIÓN MANUAL (BORRAR O COMENTAR ANTES DE SUBIR A GIT)
-// =========================================================================
-// Forzamos a que corra la función una vez de manera aislada para ver los logs
-(async () => {
-  console.log("Iniciando prueba rápida del servicio...");
-  // Parámetros ficticios: userId = 10, seatId = 1, slotId = 2, tiempoX = 45 minutos
-  await agendarPuesto(10, 1, 2, 45);
-})();

@@ -1,53 +1,50 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-class Usuario extends Model {}
+class User extends Model {}
 
-Usuario.init(
+User.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    nombre: {
-      type: DataTypes.STRING(100),
+    name: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [2, 100],
       }
     },
     email: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
       validate: {
         isEmail: true,
       }
     },
-    activo: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+    role_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 3, // Por defecto entra como Estudiante (id: 3)
+      references: {
+        model: 'role', // Hace referencia a la tabla 'role' del init.sql
+        key: 'id',
+      }
     },
-
-    rol: {
-      type: DataTypes.STRING(30),
-      defaultValue: 'estudiante',
-      allowNull: false
-    },
-    proveedorAuth: {
-      type: DataTypes.STRING(20),
-      defaultValue: 'local',
-      allowNull: false
+    status: {
+      type: DataTypes.STRING(50),
+      defaultValue: 'Activo',
     }
   },
   {
     sequelize,
-    modelName: 'Usuario',
-    tableName: 'usuarios',
-    timestamps: true,
+    modelName: 'User',
+    tableName: 'user',
+    timestamps: false,
   }
 );
 
-module.exports = Usuario;
+module.exports = User;
