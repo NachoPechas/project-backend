@@ -24,7 +24,7 @@ INSERT INTO time_slot(start_time,end_time) VALUES
 
 INSERT INTO usuarios(nombre,role_id,email,activo,rol,"proveedorAuth","createdAt","updatedAt") VALUES
 ('Tomás Angarita',3,'tangaritac@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
-('Laura Gómez',2,'lgomez@unal.edu.co',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+('Laura Gómez',2,'lgomez@gmail.com',TRUE,'bibliotecario','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 ('Carlos Rodríguez',1,'crodriguez@unal.edu.co',TRUE,'administrador','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 ('María Pérez',3,'mperez@unal.edu.co',TRUE,'estudiante','local',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 ('Juan López',3,'jlopez@unal.edu.co',TRUE,'estudiante','google',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
