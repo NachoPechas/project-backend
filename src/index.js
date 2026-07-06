@@ -1,7 +1,9 @@
 require('dotenv').config(); // carga variables del .env
 const express = require('express');
 const sequelize = require('./config/database');
-require('./models/user'); // registrar modelo
+require('./models/user');
+require('./models/studySeat');
+require('./models/seatReservation'); 
 const usuariosRouter = require('./routes/user');
 const app = express();
 const PORT = process.env.PORT || 3000;

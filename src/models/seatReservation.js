@@ -1,7 +1,8 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
-const User = require('./user'); 
-const StudySeat = require('./studySeat'); 
+
+const User = require('./user');
+const StudySeat = require('./studySeat');
 
 class SeatReservation extends Model {}
 
@@ -15,18 +16,10 @@ SeatReservation.init(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'user',
-        key: 'id',
-      },
     },
     seat_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'study_seat',
-        key: 'id',
-      },
     },
     slot_id: {
       type: DataTypes.INTEGER,
@@ -45,7 +38,7 @@ SeatReservation.init(
     sequelize,
     modelName: 'SeatReservation',
     tableName: 'seat_reservation',
-    timestamps: false,           
+    timestamps: false,
   }
 );
 
