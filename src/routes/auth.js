@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
-const Usuario = require('../models/user');
+const User = require('../models/user');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const JWT_SECRET = process.env.JWT_SECRET || 'secreto_para_la_biblioteca_123';
@@ -22,8 +22,7 @@ router.post('/google-login', async (req, res) => {
     });
     
     const payload = ticket.getPayload();
-    const { email, name } = payload;
-
+    const { email, name } = payload; 
 
     if (!email.endsWith('@unal.edu.co')) {
       return res.status(403).json({ 
@@ -31,34 +30,49 @@ router.post('/google-login', async (req, res) => {
       });
     }
 
-    let [usuario, creado] = await Usuario.findOrCreate({
+    let assignedRoleId = 3; 
+
+    if (email === 'admin.biblioteca@unal.edu.co') {
+      assignedRoleId = 1; 
+    }
+
+
+    let [dbUser, created] = await User.findOrCreate({
       where: { email: email },
       defaults: {
-        nombre: name,   // Guardamos 'name' de Google en 'nombre' de Postgres
-        activo: true,             
-        rol: 'estudiante',        
-        proveedorAuth: 'google'   
+        name: name,
+        role_id: assignedRoleId, // Se guarda el ID numérico (1, 2 o 3)
+        status: 'Activo'
       }
     });
 
-    if (!usuario.activo) {
-      return res.status(403).json({ error: 'Tu usuario se encuentra inactivo en el sistema.' });
+    if (dbUser.status !== 'Activo') {
+      return res.status(403).json({ error: 'Tu usuario no se encuentra activo en el sistema.' });
     }
 
+    const roleMap = { 1: 'Administrador', 2: 'Bibliotecario', 3: 'Estudiante' };
+    const roleName = roleMap[dbUser.role_id] || 'Estudiante';
+
     const libraryToken = jwt.sign(
-      { id: usuario.id, email: usuario.email, rol: usuario.rol || 'estudiante' },
+      { 
+        id: dbUser.id, 
+        email: dbUser.email, 
+        roleId: dbUser.role_id,
+        roleName: roleName 
+      },
       JWT_SECRET,
       { expiresIn: '8h' }
     );
 
     return res.json({
-      message: creado ? 'Usuario registrado e iniciado sesión con éxito' : 'Inicio de sesión exitoso',
+      message: created ? 'Usuario registrado e iniciado sesión con éxito' : 'Inicio de sesión exitoso',
       token: libraryToken,
       user: {
-        id: usuario.id,
-        nombre: usuario.nombre,
-        email: usuario.email,
-        rol: usuario.rol || 'estudiante'
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        roleId: dbUser.role_id,
+        roleName: roleName
       }
     });
 
