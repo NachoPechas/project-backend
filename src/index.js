@@ -3,6 +3,8 @@ const express = require('express');
 const sequelize = require('./config/database');
 const models = require('./models');
 const usuariosRouter = require('./routes/user');
+const booksRouter = require('./routes/book');
+const itemsRouter = require('./routes/item');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,6 +29,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/usuarios', usuariosRouter);
+app.use('/api/libros', booksRouter);
+app.use('/api/ejemplares', itemsRouter);
 
 async function iniciar() {
   try {
