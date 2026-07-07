@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Book } = require('../models');
 
 async function createBook(data) {
@@ -6,12 +7,32 @@ async function createBook(data) {
     author: data.author,
     category: data.category,
     publicationYear: data.publicationYear,
-    description: data.description,
   });
 }
 
 async function listBooks() {
-  return Book.findAll({ order: [['createdAt', 'DESC']] });
+  return Book.findAll({ order: [['title', 'ASC']] });
+}
+
+async function searchCatalog(filters = {}) {
+  const where = {};
+
+  if (filters.title) {
+    where.title = { [Op.iLike]: `%${String(filters.title).trim()}%` };
+  }
+
+  if (filters.author) {
+    where.author = { [Op.iLike]: `%${String(filters.author).trim()}%` };
+  }
+
+  if (filters.category) {
+    where.category = { [Op.iLike]: `%${String(filters.category).trim()}%` };
+  }
+
+  return Book.findAll({
+    where,
+    order: [['title', 'ASC']],
+  });
 }
 
 async function getBookById(id) {
@@ -21,5 +42,6 @@ async function getBookById(id) {
 module.exports = {
   createBook,
   listBooks,
+  searchCatalog,
   getBookById,
 };

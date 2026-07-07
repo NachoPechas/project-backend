@@ -1,23 +1,74 @@
+const { Op } = require('sequelize');
 const { Item } = require('../models');
 
 async function createItem(data) {
   return Item.create({
-    code: data.code,
     bookId: data.bookId,
-    status: data.status || 'disponible',
-    location: data.location,
-    physicalCondition: data.physicalCondition || 'buen_estado',
+    description: data.description,
+    status: data.status || 'Disponible',
+    physicalCondition: data.physicalCondition || 'Bueno',
   });
 }
 
 async function listItemsByBook(bookId) {
   return Item.findAll({
     where: { bookId },
-    order: [['createdAt', 'DESC']],
+    order: [['id', 'ASC']],
   });
+}
+
+async function getStatusByIdentifier(identifier) {
+  const value = String(identifier).trim();
+
+  if (!Number.isInteger(Number(value))) {
+    return null;
+  }
+
+  return Item.findOne({
+    where: { id: Number(value) },
+    attributes: ['id', 'bookId', 'description', 'status', 'physicalCondition'],
+  });
+}
+
+function requiresMaintenance(physicalCondition) {
+  const normalizedCondition = String(physicalCondition)
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  return ['danado', 'malo', 'roto', 'deteriorado'].some((word) =>
+    normalizedCondition.includes(word)
+  );
+}
+
+async function updatePhysicalCondition(identifier, physicalCondition) {
+  const value = String(identifier).trim();
+
+  if (!Number.isInteger(Number(value))) {
+    return null;
+  }
+
+  const item = await Item.findOne({ where: { id: Number(value) } });
+
+  if (!item) {
+    return null;
+  }
+
+  item.physicalCondition = physicalCondition;
+
+  if (requiresMaintenance(physicalCondition)) {
+    item.status = 'Mantenimiento';
+  }
+
+  await item.save();
+
+  return item;
 }
 
 module.exports = {
   createItem,
   listItemsByBook,
+  getStatusByIdentifier,
+  updatePhysicalCondition,
 };

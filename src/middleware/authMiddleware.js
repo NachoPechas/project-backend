@@ -1,44 +1,50 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'secreto_para_la_biblioteca_123';
 
-// 1. Middleware Base: Verifica que el usuario esté logueado con un token válido
+const JWT_SECRET = process.env.JWT_SECRET || 'secret_token_key_unal';
+
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
-    return res.status(401).json({ error: 'Acceso denegado. No se proporcionó un token.' });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      error: 'Acceso denegado. No se proporciono un token.',
+    });
   }
+
+  const token = authHeader.split(' ')[1];
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(403).json({ error: 'Token inválido o expirado.' });
+    return res.status(403).json({
+      error: 'Token invalido o expirado.',
+    });
   }
 };
 
-// 2. Middleware Especializado: Solo permite el paso a Estudiantes (role_id: 3)
-const isStudent = (req, res, next) => {
-  if (req.user && req.user.roleId === 3) {
-    next();
-  } else {
-    return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de Estudiante.' });
-  }
-};
+const authorize = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        error: 'Usuario no autenticado.',
+      });
+    }
 
-// 3. Middleware Especializado: Permite el paso a Bibliotecarios (2) o Administradores (1)
-const isLibraryStaff = (req, res, next) => {
-  if (req.user && (req.user.roleId === 2 || req.user.roleId === 1)) {
+    const userRole = Number(req.user.roleId || req.user.role_id);
+
+    if (!allowedRoles.includes(userRole)) {
+      return res.status(403).json({
+        error: 'No tienes permisos para realizar esta accion.',
+      });
+    }
+
     next();
-  } else {
-    return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de Bibliotecario o Administrador.' });
-  }
+  };
 };
 
 module.exports = {
   verifyToken,
-  isStudent,
-  isLibraryStaff
+  authorize,
 };

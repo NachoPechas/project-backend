@@ -1,31 +1,32 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-class Role extends Model {}
+class TimeSlot extends Model {}
 
-Role.init(
+TimeSlot.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: true,
+    startTime: {
+      type: DataTypes.TIME,
+      field: 'start_time',
+      allowNull: true,
     },
-    description: {
-      type: DataTypes.TEXT,
+    endTime: {
+      type: DataTypes.TIME,
+      field: 'end_time',
       allowNull: true,
     },
   },
   {
     sequelize,
-    modelName: 'Role',
-    tableName: 'role',
+    modelName: 'TimeSlot',
+    tableName: 'time_slot',
     timestamps: false,
   }
 );
 
-module.exports = Role;
+module.exports = TimeSlot;

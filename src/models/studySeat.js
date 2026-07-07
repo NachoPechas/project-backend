@@ -6,7 +6,8 @@ class StudySeat extends Model {}
 StudySeat.init({
   id: { 
     type: DataTypes.INTEGER, 
-    primaryKey: true 
+    primaryKey: true,
+    autoIncrement: true
   },
   status: { 
     type: DataTypes.STRING(50), 
