@@ -10,7 +10,7 @@ class LoanService {
     async rentBook(userId, itemId) {
         const item = await itemRepository.findById(itemId);
 
-        if (!item || item.status !== 'Disponible') {
+        if (!item || item.availability_status !== 'Disponible') {
             const error = new Error('El ejemplar del libro no esta disponible para prestamo.');
             error.status = 400;
             throw error;
@@ -21,19 +21,28 @@ class LoanService {
         fechaVencimiento.setDate(fechaHoy.getDate() + 8);
 
         const loanData = {
-            userId,
-            itemId,
-            loanDate: fechaHoy,
-            dueDate: fechaVencimiento,
-            returnDate: null,
-            initialCondition: item.physicalCondition || 'Excelente',
+            user_id: userId,
+            item_id: itemId,
+            loan_date: fechaHoy,
+            due_date: fechaVencimiento,
+            return_date: null,
+            initial_condition: item.physical_condition || 'Excelente',
         };
 
         const nuevoPrestamo = await loanRepository.create(loanData);
 
-        await itemRepository.update(itemId, { status: 'Prestado' });
+        await itemRepository.update(itemId, { availability_status: 'Prestado' });
 
         return nuevoPrestamo;
+    }
+
+    async getUserLoanHistory(userId) {
+        if (!userId) {
+            const error = new Error('El ID de usuario es obligatorio.');
+            error.status = 400;
+            throw error;
+        }
+        return await loanRepository.findByUserId(userId);
     }
 }
 
