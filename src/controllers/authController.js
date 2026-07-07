@@ -20,9 +20,9 @@ class AuthController {
                 token,
                 user: {
                     id: user.id,
-                    name: user.name,
+                    nombre: user.nombre,
                     email: user.email,
-                    role_id: user.role_id
+                    roleId: user.roleId
                 }
             });
 

@@ -3,10 +3,22 @@ const bcrypt = require('bcrypt');
 
 class RegistrerService {
     async registerStudent(userData) {
-        const { name, email, password } = userData;
+        const { nombre, email, password } = userData;
+
+        if (!nombre || !String(nombre).trim()) {
+            const error = new Error('El nombre es obligatorio.');
+            error.status = 400;
+            throw error;
+        }
 
         if (!email || !email.trim().toLowerCase().endsWith('@unal.edu.co')) {
             const error = new Error('Registro denegado. Solo se permiten correos de la UNAL.');
+            error.status = 400;
+            throw error;
+        }
+
+        if (!password || String(password).length < 6) {
+            const error = new Error('La contrasena debe tener al menos 6 caracteres.');
             error.status = 400;
             throw error;
         }
@@ -21,12 +33,12 @@ class RegistrerService {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newStudentData = {
-            name: name.trim(),
+            nombre: nombre.trim(),
             email: email.trim().toLowerCase(),
             password: hashedPassword,
-            role_id: 3,
-            status: 'Activa',
-            provider_auth: 'local'
+            roleId: 3,
+            status: 'Activo',
+            providerAuth: 'local'
         };
 
         try {

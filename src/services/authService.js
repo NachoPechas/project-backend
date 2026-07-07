@@ -13,9 +13,9 @@ class AuthService {
             throw error;
         }
 
-        if (user.lock_until) {
+        if (user.lockUntil) {
             const ahoraUTC = Date.now();
-            const bloqueoUTC = new Date(user.lock_until).getTime();
+            const bloqueoUTC = new Date(user.lockUntil).getTime();
 
             if (ahoraUTC < bloqueoUTC) {
                 let minutosRestantes = Math.ceil((bloqueoUTC - ahoraUTC) / 60000);
@@ -31,17 +31,23 @@ class AuthService {
             }
         }
 
+        if (!user.password) {
+            const error = new Error('Este usuario no tiene contrasena local configurada.');
+            error.status = 401;
+            throw error;
+        }
+
         const isPasswordValid = await bcrypt.compare(plainPassword, user.password);
 
         if (!isPasswordValid) {
-            const nuevoIntento = (user.login_attempts || 0) + 1;
-            let dataUpdate = { login_attempts: nuevoIntento };
+            const nuevoIntento = (user.loginAttempts || 0) + 1;
+            let dataUpdate = { loginAttempts: nuevoIntento };
 
             if (nuevoIntento >= 3) {
                 const tiempoBloqueo = new Date(Date.now() + 15 * 60 * 1000); 
                 
-                dataUpdate.lock_until = tiempoBloqueo;
-                dataUpdate.login_attempts = 0; 
+                dataUpdate.lockUntil = tiempoBloqueo;
+                dataUpdate.loginAttempts = 0; 
                 
                 await userRepository.update(user.id, dataUpdate);
                 const error = new Error('Cuenta bloqueada tras 3 intentos fallidos por seguridad.');
@@ -55,10 +61,10 @@ class AuthService {
             throw error;
         }
 
-        await userRepository.update(user.id, { login_attempts: 0, lock_until: null });
+        await userRepository.update(user.id, { loginAttempts: 0, lockUntil: null });
 
         const token = jwt.sign(
-            { id: user.id, role_id: user.role_id, email: user.email },
+            { id: user.id, roleId: user.roleId, email: user.email },
             process.env.JWT_SECRET || 'secret_token_key_unal',
             { expiresIn: '4h' }
         );

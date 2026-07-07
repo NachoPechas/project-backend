@@ -12,44 +12,46 @@ Loan.init(
     },
     userId: {
       type: DataTypes.INTEGER,
+      field: 'user_id',
       allowNull: false,
     },
     itemId: {
       type: DataTypes.INTEGER,
+      field: 'item_id',
       allowNull: false,
     },
     loanDate: {
       type: DataTypes.DATEONLY,
+      field: 'loan_date',
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     dueDate: {
       type: DataTypes.DATEONLY,
+      field: 'due_date',
       allowNull: false,
     },
     returnDate: {
       type: DataTypes.DATEONLY,
+      field: 'return_date',
       allowNull: true,
     },
-    status: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      defaultValue: 'activo',
-    },
-    notificationSent: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    fineApplied: {
-      type: DataTypes.DECIMAL(10, 2),
+    initialCondition: {
+      type: DataTypes.STRING(100),
+      field: 'initial_condition',
       allowNull: true,
     },
+    finalCondition: {
+      type: DataTypes.STRING(100),
+      field: 'final_condition',
+      allowNull: true,
+    }
   },
   {
     sequelize,
     modelName: 'Loan',
     tableName: 'loan',
-    timestamps: true,
+    timestamps: false,
   }
 );
 

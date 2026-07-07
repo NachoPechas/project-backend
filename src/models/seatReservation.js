@@ -1,9 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-const User = require('./user');
-const StudySeat = require('./studySeat');
-
 class SeatReservation extends Model {}
 
 SeatReservation.init(
@@ -13,20 +10,24 @@ SeatReservation.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
+      field: 'user_id',
       allowNull: false,
     },
-    seat_id: {
+    seatId: {
       type: DataTypes.INTEGER,
+      field: 'seat_id',
       allowNull: false,
     },
-    slot_id: {
+    slotId: {
       type: DataTypes.INTEGER,
+      field: 'slot_id',
       allowNull: false,
     },
-    reservation_date: {
+    reservationDate: {
       type: DataTypes.DATEONLY,
+      field: 'reservation_date',
       defaultValue: DataTypes.NOW,
     },
     status: { 
@@ -41,13 +42,5 @@ SeatReservation.init(
     timestamps: false,
   }
 );
-
-// Relaciones con Usuarios
-SeatReservation.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
-User.hasMany(SeatReservation, { foreignKey: 'user_id', as: 'reservations' });
-
-// Relaciones con Puestos
-SeatReservation.belongsTo(StudySeat, { foreignKey: 'seat_id', as: 'seat' });
-StudySeat.hasMany(SeatReservation, { foreignKey: 'seat_id', as: 'reservations' });
 
 module.exports = SeatReservation;

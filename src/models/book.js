@@ -19,15 +19,12 @@ Book.init(
       allowNull: false,
     },
     category: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(255),
       allowNull: true,
     },
     publicationYear: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.TEXT,
+      field: 'publication_year',
       allowNull: true,
     },
   },
@@ -35,7 +32,7 @@ Book.init(
     sequelize,
     modelName: 'Book',
     tableName: 'book',
-    timestamps: true,
+    timestamps: false,
   }
 );
 

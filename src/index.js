@@ -5,6 +5,12 @@ const models = require('./models');
 const usuariosRouter = require('./routes/user');
 const booksRouter = require('./routes/book');
 const itemsRouter = require('./routes/item');
+const studySeatsRouter = require('./routes/studySeat');
+const seatReservationsRouter = require('./routes/seatReservation');
+const authRouter = require('./routes/auth');
+const notificationsRouter = require('./routes/notification');
+const notificationService = require('./services/notificationService');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +37,10 @@ app.get('/', (req, res) => {
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/libros', booksRouter);
 app.use('/api/ejemplares', itemsRouter);
+app.use('/api/puestos', studySeatsRouter);
+app.use('/api/reservas-puestos', seatReservationsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/notificaciones', notificationsRouter);
 
 async function iniciar() {
   try {
@@ -38,6 +48,22 @@ async function iniciar() {
     console.log('■ Conexión a PostgreSQL exitosa');
     await sequelize.sync({ force: false });
     console.log('■ Modelos sincronizados con la BD');
+    notificationService.createDueDateNotifications().catch((error) => {
+      console.error('Error al generar notificaciones de vencimiento:', error.message);
+    });
+    notificationService.createOverdueNotifications().catch((error) => {
+      console.error('Error al generar notificaciones de retraso:', error.message);
+    });
+
+    setInterval(() => {
+      notificationService.createDueDateNotifications().catch((error) => {
+        console.error('Error al generar notificaciones de vencimiento:', error.message);
+      });
+      notificationService.createOverdueNotifications().catch((error) => {
+        console.error('Error al generar notificaciones de retraso:', error.message);
+      });
+    }, 24 * 60 * 60 * 1000);
+
     app.listen(PORT, () => {
       console.log(`■ Servidor corriendo en http://localhost:${PORT}`);
     });

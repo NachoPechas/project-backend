@@ -10,35 +10,33 @@ Item.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    code: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: true,
-    },
     bookId: {
       type: DataTypes.INTEGER,
+      field: 'book_id',
       allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     status: {
       type: DataTypes.STRING(50),
+      field: 'availability_status',
       allowNull: false,
-      defaultValue: 'disponible',
-    },
-    location: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
+      defaultValue: 'Disponible',
     },
     physicalCondition: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
+      field: 'physical_condition',
       allowNull: true,
-      defaultValue: 'buen_estado',
+      defaultValue: 'Bueno',
     },
   },
   {
     sequelize,
     modelName: 'Item',
     tableName: 'item',
-    timestamps: true,
+    timestamps: false,
   }
 );
 

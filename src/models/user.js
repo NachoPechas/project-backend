@@ -12,6 +12,7 @@ User.init(
     },
     nombre: {
       type: DataTypes.STRING(255),
+      field: 'name',
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -27,8 +28,28 @@ User.init(
     },
     roleId: {
       type: DataTypes.INTEGER,
+      field: 'role_id',
       allowNull: false,
       defaultValue: 3,
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    loginAttempts: {
+      type: DataTypes.INTEGER,
+      field: 'login_attempts',
+      defaultValue: 0,
+    },
+    lockUntil: {
+      type: DataTypes.DATE,
+      field: 'lock_until',
+      allowNull: true,
+    },
+    providerAuth: {
+      type: DataTypes.STRING(20),
+      field: 'provider_auth',
+      defaultValue: 'local',
     },
     status: {
       type: DataTypes.STRING(50),
@@ -40,6 +61,7 @@ User.init(
     modelName: 'User',
     tableName: 'user',
     timestamps: true,
+    underscored: true,
   }
 );
 
