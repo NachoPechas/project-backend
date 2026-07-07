@@ -1,32 +1,42 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Book = sequelize.define('Book', {
+class Book extends Model {}
+
+Book.init(
+  {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     author: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     category: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING(100),
+      allowNull: true,
     },
-    publication_year: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        field: 'publication_year' 
-    }
-}, {
-    tableName: 'book', 
-    timestamps: false  
-});
+    publicationYear: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Book',
+    tableName: 'book',
+    timestamps: true,
+  }
+);
 
 module.exports = Book;

@@ -1,12 +1,12 @@
 const Item = require('../models/item');
-const Book = require('../models/book');
 
 class ItemRepository {
-  async findById(id) {
-    return Item.findByPk(id, {
-      include: [{ model: Book, as: 'book', attributes: ['title', 'author'] }]
-    });
-  }
-}
+    async findById(id) {
+        return await Item.findByPk(id);
+    }
 
+    async update(id, updateData) {
+        return await Item.update(updateData, { where: { id } });
+    }
+}
 module.exports = new ItemRepository();

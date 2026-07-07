@@ -1,22 +1,23 @@
-const itemRepository = require('../repositories/itemRepository');
+const { Item } = require('../models');
 
-class ItemService {
-  async getStatusById(id) {
-    const item = await itemRepository.findById(id);
-
-    if (!item) {
-      return null;
-    }
-
-    return {
-      id: item.id,
-      description: item.description,
-      physical_condition: item.physical_condition,
-      availability_status: item.availability_status,
-      disponible: item.availability_status === 'Disponible',
-      book: item.book ? { title: item.book.title, author: item.book.author } : null
-    };
-  }
+async function createItem(data) {
+  return Item.create({
+    code: data.code,
+    bookId: data.bookId,
+    status: data.status || 'disponible',
+    location: data.location,
+    physicalCondition: data.physicalCondition || 'buen_estado',
+  });
 }
 
-module.exports = new ItemService();
+async function listItemsByBook(bookId) {
+  return Item.findAll({
+    where: { bookId },
+    order: [['createdAt', 'DESC']],
+  });
+}
+
+module.exports = {
+  createItem,
+  listItemsByBook,
+};
