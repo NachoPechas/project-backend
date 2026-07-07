@@ -5,16 +5,16 @@ const Book = require('./book');
 const Item = require('./item');
 const Loan = require('./loan');
 
-Role.hasMany(User, { foreignKey: 'roleId', as: 'users' });
+Role.hasMany(User, { foreignKey: 'roleId', as: 'user' });
 User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });
 
-Book.hasMany(Item, { foreignKey: 'bookId', as: 'items' });
+Book.hasMany(Item, { foreignKey: 'bookId', as: 'item' });
 Item.belongsTo(Book, { foreignKey: 'bookId', as: 'book' });
 
-Item.hasMany(Loan, { foreignKey: 'itemId', as: 'loans' });
+Item.hasMany(Loan, { foreignKey: 'itemId', as: 'loan' });
 Loan.belongsTo(Item, { foreignKey: 'itemId', as: 'item' });
 
-User.hasMany(Loan, { foreignKey: 'userId', as: 'loans' });
+User.hasMany(Loan, { foreignKey: 'userId', as: 'loan' });
 Loan.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 module.exports = {

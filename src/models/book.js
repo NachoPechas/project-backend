@@ -34,7 +34,7 @@ Book.init(
   {
     sequelize,
     modelName: 'Book',
-    tableName: 'books',
+    tableName: 'book',
     timestamps: true,
   }
 );
