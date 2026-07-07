@@ -1,37 +1,45 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
-const Book = require('./book');
 
-const Item = sequelize.define('Item', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+class Item extends Model {}
+
+Item.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    code: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      unique: true,
+    },
+    bookId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'disponible',
+    },
+    location: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    physicalCondition: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      defaultValue: 'buen_estado',
+    },
   },
-  book_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'book',
-      key: 'id'
-    }
-  },
-  description: {
-    type: DataTypes.TEXT
-  },
-  physical_condition: {
-    type: DataTypes.STRING(100)
-  },
-  availability_status: {
-    type: DataTypes.STRING(50),
-    defaultValue: 'Disponible'
+  {
+    sequelize,
+    modelName: 'Item',
+    tableName: 'items',
+    timestamps: true,
   }
-}, {
-  tableName: 'item',
-  timestamps: false
-});
-
-Item.belongsTo(Book, { foreignKey: 'book_id', as: 'book' });
-Book.hasMany(Item, { foreignKey: 'book_id', as: 'items' });
+);
 
 module.exports = Item;
