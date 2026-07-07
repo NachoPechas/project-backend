@@ -1,46 +1,42 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-class User extends Model {}
+class Book extends Model {}
 
-User.init(
+Book.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    nombre: {
+    title: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      }
     },
-    email: {
+    author: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      }
     },
-    roleId: {
+    category: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    publicationYear: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 3,
+      allowNull: true,
     },
-    status: {
-      type: DataTypes.STRING(50),
-      defaultValue: 'Activo',
-    }
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   },
   {
     sequelize,
-    modelName: 'User',
-    tableName: 'users',
+    modelName: 'Book',
+    tableName: 'books',
     timestamps: true,
   }
 );
 
-module.exports = User;
+module.exports = Book;
