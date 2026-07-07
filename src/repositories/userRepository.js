@@ -1,8 +1,21 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+const User = require('../models/user');
 
-// POST /api/users/register
-router.post('/register', userController.register);
+class UserRepository {
+    async findByEmail(email) {
+        return await User.findOne({
+            where: { email: email }
+        });
+    }
 
-module.exports = router;
+    async create(userData) {
+        return await User.create(userData);
+    }
+
+    async update(id, updateData) {
+        return await User.update(updateData, {
+            where: { id: id }
+        });
+    }
+}
+
+module.exports = new UserRepository();

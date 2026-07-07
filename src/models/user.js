@@ -32,11 +32,27 @@ User.init(
       references: {
         model: 'role', 
         key: 'id',
-      }
+      },
+      field: 'role_id'
     },
     status: {
       type: DataTypes.STRING(50),
       defaultValue: 'Activo',
+    },
+
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    login_attempts: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      field: 'login_attempts'
+    },
+    lock_until: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'lock_until'
     }
   },
   {
