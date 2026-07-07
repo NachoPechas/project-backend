@@ -2,7 +2,13 @@ const Penalty = require('../models/penalty');
 const User = require('../models/user');
 const Loan = require('../models/loan');
 
-class PenaltyRepository {s
+// ============================================================================
+// 🔗 DEFINIR LAS ASOCIACIONES (Para que Sequelize entienda las Foreign Keys)
+// ============================================================================
+Penalty.belongsTo(User, { foreignKey: 'user_id' });
+Penalty.belongsTo(Loan, { foreignKey: 'loan_id' }); 
+
+class PenaltyRepository {
     async findAllPenalties() {
         return await Penalty.findAll({
             order: [['created_date', 'DESC']],

@@ -23,6 +23,7 @@ async function correrPruebaAutenticacion() {
     
     const nuevoUsuario = await registrerService.registerStudent({
       name: 'Usuario Prueba Auth',
+      nombre: 'Usuario Prueba Auth',
       email: correoPrueba,
       password: claveCorrecta
     });
