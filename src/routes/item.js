@@ -8,6 +8,29 @@ const {
 } = require('../middleware/authMiddleware');
 const itemController = require('../controllers/item');
 
+// Listar todos los ejemplares (Administrador o Bibliotecario)
+router.get(
+  '/',
+  verifyToken,
+  authorize(1, 2),
+  async (req, res) => {
+    try {
+      const items = await itemService.listItems();
+
+      res.json({
+        ok: true,
+        data: items
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        ok: false,
+        message: error.message
+      });
+    }
+  }
+);
+
 // Crear un ejemplar (Administrador o Bibliotecario)
 router.post(
   '/',

@@ -46,6 +46,32 @@ class LoanController {
             });
         }
     }
+
+    async getUserHistory(req, res) {
+        try {
+            const userId = Number(req.params.userId);
+
+            if (!Number.isInteger(userId) || userId <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'El userId debe ser un entero positivo.'
+                });
+            }
+
+            const historial = await loanService.getUserLoanHistory(userId, req.query);
+
+            return res.status(200).json({
+                success: true,
+                count: historial.length,
+                data: historial
+            });
+        } catch (error) {
+            return res.status(error.status || 500).json({
+                success: false,
+                message: error.message || 'Error al recuperar el historial del usuario.'
+            });
+        }
+    }
 }
 
 module.exports = new LoanController();
