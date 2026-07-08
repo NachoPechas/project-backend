@@ -32,7 +32,7 @@ class LoanController {
     async getMyHistory(req, res) {
         try {
             const userId = req.user.id; 
-            const historial = await loanService.getUserLoanHistory(userId);
+            const historial = await loanService.getUserLoanHistory(userId, req.query);
 
             return res.status(200).json({
                 success: true,

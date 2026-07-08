@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const auditService = require('../services/auditService');
 
 class AuthController {
     async login(req, res) {
@@ -13,6 +14,14 @@ class AuthController {
             }
 
             const { token, user } = await authService.login(email, password);
+            auditService.logAction({
+                userId: user.id,
+                action: 'LOGIN',
+                entity: 'User',
+                entityId: user.id,
+                details: { email: user.email },
+                ipAddress: req.ip
+            }).catch(() => {});
 
             return res.status(200).json({
                 success: true,

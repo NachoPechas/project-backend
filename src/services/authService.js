@@ -13,6 +13,12 @@ class AuthService {
             throw error;
         }
 
+        if (user.status === 'Suspendido') {
+            const error = new Error('Usuario suspendido temporalmente por incumplimientos de reservas.');
+            error.status = 403;
+            throw error;
+        }
+
         if (user.lockUntil) {
             const ahoraUTC = Date.now();
             const bloqueoUTC = new Date(user.lockUntil).getTime();

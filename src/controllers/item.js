@@ -1,4 +1,5 @@
 const itemService = require('../services/itemService');
+const auditService = require('../services/auditService');
 
 class ItemController {
   async getItemStatus(req, res) {
@@ -61,6 +62,15 @@ class ItemController {
           message: `No existe un ejemplar con identificador ${identifier}.`,
         });
       }
+
+      auditService.logAction({
+        userId: req.user ? req.user.id : null,
+        action: 'UPDATE_ITEM_PHYSICAL_CONDITION',
+        entity: 'Item',
+        entityId: item.id,
+        details: { physicalCondition: item.physicalCondition, status: item.status },
+        ipAddress: req.ip,
+      }).catch(() => {});
 
       return res.status(200).json({
         success: true,

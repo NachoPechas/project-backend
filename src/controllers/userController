@@ -1,4 +1,5 @@
 const userService = require('../services/registrerService');
+const auditService = require('../services/auditService');
 
 class UserController {
     async register(req, res) {
@@ -13,6 +14,14 @@ class UserController {
             }
 
             const newUser = await userService.registerStudent({ nombre, email, password });
+            auditService.logAction({
+                userId: newUser.id,
+                action: 'REGISTER_USER',
+                entity: 'User',
+                entityId: newUser.id,
+                details: { email: newUser.email },
+                ipAddress: req.ip
+            }).catch(() => {});
 
             return res.status(201).json({
                 success: true,

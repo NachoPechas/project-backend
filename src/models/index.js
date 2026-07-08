@@ -9,6 +9,7 @@ const SeatReservation = require('./seatReservation');
 const TimeSlot = require('./timeSlot');
 const Notification = require('./notification');
 const Penalty = require('./penalty');
+const AuditLog = require('./auditLog');
 
 Role.hasMany(User, { foreignKey: 'roleId', as: 'users' });
 User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });
@@ -40,6 +41,9 @@ Penalty.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 Loan.hasMany(Penalty, { foreignKey: 'loanId', as: 'penalties' });
 Penalty.belongsTo(Loan, { foreignKey: 'loanId', as: 'loan' });
 
+User.hasMany(AuditLog, { foreignKey: 'userId', as: 'auditLogs' });
+AuditLog.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
 module.exports = {
   sequelize,
   Role,
@@ -52,4 +56,5 @@ module.exports = {
   TimeSlot,
   Notification,
   Penalty,
+  AuditLog,
 };
