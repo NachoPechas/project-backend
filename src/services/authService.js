@@ -13,7 +13,13 @@ class AuthService {
             throw error;
         }
 
-        if (user.status === 'Suspendido') {
+        const normalizedStatus = String(user.status || '')
+            .trim()
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+        if (normalizedStatus === 'suspendido' || normalizedStatus === 'blocked' || normalizedStatus === 'bloqueado') {
             const error = new Error('Usuario suspendido temporalmente por incumplimientos de reservas.');
             error.status = 403;
             throw error;
@@ -43,7 +49,14 @@ class AuthService {
             throw error;
         }
 
-        const isPasswordValid = await bcrypt.compare(plainPassword, user.password);
+        const passwordIsHashed =
+            user.password.startsWith('$2a$') ||
+            user.password.startsWith('$2b$') ||
+            user.password.startsWith('$2y$');
+
+        const isPasswordValid = passwordIsHashed
+            ? await bcrypt.compare(plainPassword, user.password)
+            : plainPassword === user.password;
 
         if (!isPasswordValid) {
             const nuevoIntento = (user.loginAttempts || 0) + 1;
