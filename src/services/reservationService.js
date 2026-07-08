@@ -1,6 +1,13 @@
 const StudySeat = require('../models/studySeat');
 const SeatReservation = require('../models/seatReservation');
 
+function getModels(overrides = {}) {
+  return {
+    StudySeat: overrides.StudySeat || StudySeat,
+    SeatReservation: overrides.SeatReservation || SeatReservation,
+  };
+}
+
 /**
  * Agendar un puesto de estudio para un estudiante
  * @param {number} userId
@@ -8,13 +15,14 @@ const SeatReservation = require('../models/seatReservation');
  * @param {number} slotId 
  * @param {number} tiempoX 
  */
-async function agendarPuesto(userId, seatId, slotId, tiempoX) {
+async function agendarPuesto(userId, seatId, slotId, tiempoX, injectedModels) {
+  const { StudySeat: StudySeatModel, SeatReservation: ReservationModel } = getModels(injectedModels);
   try {
     // ── PRINT DE INICIO ──
     console.log(`\n=== 📥 INTENTO DE RESERVA ===`);
     console.log(`Buscando disponibilidad para el Puesto ID: ${seatId}...`);
 
-    const puesto = await StudySeat.findByPk(seatId);
+    const puesto = await StudySeatModel.findByPk(seatId);
 
     if (!puesto) {
       // ── PRINT DE ERROR: NO EXISTE ──
@@ -32,7 +40,7 @@ async function agendarPuesto(userId, seatId, slotId, tiempoX) {
       };
     }
 
-    await SeatReservation.create({
+    await ReservationModel.create({
       user_id: userId,
       seat_id: seatId,
       slot_id: slotId,
@@ -68,7 +76,7 @@ async function agendarPuesto(userId, seatId, slotId, tiempoX) {
  */
 async function actualizarContadoresTiempo() {
   try {
-    const puestosOcupados = await StudySeat.findAll({
+    const puestosOcupados = await StudySeatModel.findAll({
       where: {
         status: 'Ocupado'
       }
@@ -82,7 +90,7 @@ async function actualizarContadoresTiempo() {
       if (puesto.tiempo_restante === 0) {
         puesto.status = 'Disponible';
         
-        await SeatReservation.update(
+        await ReservationModel.update(
           { status: 'Finalizada' },
           { where: { seat_id: puestosOcupados.id, status: 'Activa' } }
         );

@@ -8,6 +8,15 @@ const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const JWT_SECRET = process.env.JWT_SECRET || 'secreto_para_la_biblioteca_123';
 const client = new OAuth2Client(CLIENT_ID);
 
+function buildUserDataFromGooglePayload(payload, assignedRoleId) {
+  return {
+    nombre: payload.name || payload.given_name || payload.email,
+    email: payload.email,
+    roleId: assignedRoleId,
+    status: 'Activo',
+  };
+}
+
 router.post('/google-login', async (req, res) => {
   const { token } = req.body; 
 
@@ -37,13 +46,11 @@ router.post('/google-login', async (req, res) => {
     }
 
 
+    const userData = buildUserDataFromGooglePayload({ email, name }, assignedRoleId);
+
     let [dbUser, created] = await User.findOrCreate({
       where: { email: email },
-      defaults: {
-        name: name,
-        role_id: assignedRoleId, // Se guarda el ID numérico (1, 2 o 3)
-        status: 'Activo'
-      }
+      defaults: userData
     });
 
     if (dbUser.status !== 'Activo') {
@@ -51,14 +58,14 @@ router.post('/google-login', async (req, res) => {
     }
 
     const roleMap = { 1: 'Administrador', 2: 'Bibliotecario', 3: 'Estudiante' };
-    const roleName = roleMap[dbUser.role_id] || 'Estudiante';
+    const roleName = roleMap[dbUser.roleId] || 'Estudiante';
 
     const libraryToken = jwt.sign(
-      { 
-        id: dbUser.id, 
-        email: dbUser.email, 
-        roleId: dbUser.role_id,
-        roleName: roleName 
+      {
+        id: dbUser.id,
+        email: dbUser.email,
+        roleId: dbUser.roleId,
+        roleName: roleName
       },
       JWT_SECRET,
       { expiresIn: '8h' }
@@ -69,9 +76,9 @@ router.post('/google-login', async (req, res) => {
       token: libraryToken,
       user: {
         id: dbUser.id,
-        name: dbUser.name,
+        name: dbUser.nombre,
         email: dbUser.email,
-        roleId: dbUser.role_id,
+        roleId: dbUser.roleId,
         roleName: roleName
       }
     });
@@ -82,4 +89,7 @@ router.post('/google-login', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  buildUserDataFromGooglePayload,
+};
