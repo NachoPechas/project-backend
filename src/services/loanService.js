@@ -2,6 +2,16 @@ const loanRepository = require('../repositories/loanRepository');
 const itemRepository = require('../repositories/itemRepository');
 
 class LoanService {
+    isAvailableStatus(status) {
+        const normalizedStatus = String(status || '')
+            .trim()
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+        return normalizedStatus.includes('disponible') || normalizedStatus.includes('available');
+    }
+
     /**
      * Registra el prestamo de un ejemplar a un usuario.
      * @param {number} userId
@@ -10,7 +20,7 @@ class LoanService {
     async rentBook(userId, itemId) {
         const item = await itemRepository.findById(itemId);
 
-        if (!item || item.status !== 'Disponible') {
+        if (!item || !this.isAvailableStatus(item.status)) {
             const error = new Error('El ejemplar del libro no esta disponible para prestamo.');
             error.status = 400;
             throw error;

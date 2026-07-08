@@ -48,10 +48,16 @@ async function agendarPuesto(userId, seatId, slotId, reservationDate, tiempoX) {
         return { success: false, message: `El puesto con ID ${seatId} no existe.` };
       }
 
-      if (puesto.tiempo_restante > 0 || puesto.status === 'Ocupado') {
+      const estadoPuesto = String(puesto.status || '')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+      if (estadoPuesto === 'mantenimiento' || estadoPuesto === 'fuera de servicio') {
         return {
           success: false,
-          message: `El puesto ${seatId} ya esta ocupado. Tiempo restante: ${puesto.tiempo_restante} minutos.`,
+          message: `El puesto ${seatId} no esta disponible para reservas.`,
         };
       }
 
@@ -83,10 +89,6 @@ async function agendarPuesto(userId, seatId, slotId, reservationDate, tiempoX) {
         },
         { transaction }
       );
-
-      puesto.tiempo_restante = tiempoX;
-      puesto.status = 'Ocupado';
-      await puesto.save({ transaction });
 
       return {
         success: true,
