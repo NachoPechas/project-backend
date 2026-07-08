@@ -7,6 +7,7 @@ const booksRouter = require('./routes/book');
 const itemsRouter = require('./routes/item');
 const loansRouter = require('./routes/loan');
 const returnsRouter = require('./routes/return');
+const finesRouter = require('./routes/fine');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use('/api/libros', booksRouter);
 app.use('/api/ejemplares', itemsRouter);
 app.use('/api/prestamos', loansRouter);
 app.use('/api/devoluciones', returnsRouter);
+app.use('/api/sanciones', finesRouter);
 
 async function iniciar() {
   try {
