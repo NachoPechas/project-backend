@@ -4,6 +4,9 @@ const User = require('./user');
 const Book = require('./book');
 const Item = require('./item');
 const Loan = require('./loan');
+const PhysicalStateReport = require('./physicalStateReport');
+const Notification = require('./notification');
+const AuditLog = require('./auditLog');
 
 Role.hasMany(User, { foreignKey: 'roleId', as: 'users' });
 User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });
@@ -24,4 +27,7 @@ module.exports = {
   Book,
   Item,
   Loan,
+  PhysicalStateReport,
+  Notification,
+  AuditLog,
 };

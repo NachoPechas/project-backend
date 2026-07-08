@@ -10,6 +10,9 @@ const returnsRouter = require('./routes/return');
 const finesRouter = require('./routes/fine');
 const { router: authRouter } = require('./routes/auth');
 const rolesRouter = require('./routes/role');
+const physicalStateReportsRouter = require('./routes/physicalStateReport');
+const notificationsRouter = require('./routes/notification');
+const auditLogsRouter = require('./routes/auditLog');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +39,9 @@ app.get('/', (req, res) => {
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/roles', rolesRouter);
+app.use('/api/reportes-estado', physicalStateReportsRouter);
+app.use('/api/notificaciones', notificationsRouter);
+app.use('/api/auditoria', auditLogsRouter);
 app.use('/api/libros', booksRouter);
 app.use('/api/ejemplares', itemsRouter);
 app.use('/api/prestamos', loansRouter);

@@ -103,7 +103,25 @@ async function actualizarContadoresTiempo() {
   }
 }
 
+async function createReservation(userId, seatId, slotId, tiempoX, injectedModels) {
+  const { StudySeat: StudySeatModel, SeatReservation: ReservationModel } = getModels(injectedModels);
+  const conflict = await ReservationModel.findOne({
+    where: {
+      seat_id: seatId,
+      slot_id: slotId,
+      status: 'Activa',
+    },
+  });
+
+  if (conflict) {
+    throw new Error('No es posible reservar: el puesto no está disponible en el horario seleccionado.');
+  }
+
+  return agendarPuesto(userId, seatId, slotId, tiempoX, { StudySeat: StudySeatModel, SeatReservation: ReservationModel });
+}
+
 module.exports = {
   agendarPuesto,
-  actualizarContadoresTiempo
+  actualizarContadoresTiempo,
+  createReservation,
 };
