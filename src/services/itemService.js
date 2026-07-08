@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Item } = require('../models');
+const { Book, Item } = require('../models');
 
 async function createItem(data) {
   return Item.create({
@@ -14,6 +14,19 @@ async function listItemsByBook(bookId) {
   return Item.findAll({
     where: { bookId },
     order: [['id', 'ASC']],
+  });
+}
+
+async function listItems() {
+  return Item.findAll({
+    order: [['id', 'ASC']],
+    include: [
+      {
+        model: Book,
+        as: 'book',
+        attributes: ['id', 'title', 'author', 'category'],
+      },
+    ],
   });
 }
 
@@ -68,6 +81,7 @@ async function updatePhysicalCondition(identifier, physicalCondition) {
 
 module.exports = {
   createItem,
+  listItems,
   listItemsByBook,
   getStatusByIdentifier,
   updatePhysicalCondition,
