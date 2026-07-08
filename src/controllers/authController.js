@@ -3,6 +3,7 @@ const auditService = require('../services/auditService');
 
 class AuthController {
     async login(req, res) {
+        console.log("📥 DATOS LLEGANDO DEL FRONTEND:", req.body);
         try {
             const { email, password } = req.body;
 
