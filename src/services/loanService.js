@@ -10,7 +10,7 @@ class LoanService {
     async rentBook(userId, itemId) {
         const item = await itemRepository.findById(itemId);
 
-        if (!item || item.availability_status !== 'Disponible') {
+        if (!item || item.status !== 'Disponible') {
             const error = new Error('El ejemplar del libro no esta disponible para prestamo.');
             error.status = 400;
             throw error;
@@ -21,28 +21,50 @@ class LoanService {
         fechaVencimiento.setDate(fechaHoy.getDate() + 8);
 
         const loanData = {
-            user_id: userId,
-            item_id: itemId,
-            loan_date: fechaHoy,
-            due_date: fechaVencimiento,
-            return_date: null,
-            initial_condition: item.physical_condition || 'Excelente',
+            userId,
+            itemId,
+            loanDate: fechaHoy,
+            dueDate: fechaVencimiento,
+            returnDate: null,
+            initialCondition: item.physicalCondition || 'Excelente',
         };
 
         const nuevoPrestamo = await loanRepository.create(loanData);
 
-        await itemRepository.update(itemId, { availability_status: 'Prestado' });
+        await itemRepository.update(itemId, { status: 'Prestado' });
 
         return nuevoPrestamo;
     }
 
-    async getUserLoanHistory(userId) {
+    async getUserLoanHistory(userId, filters = {}) {
         if (!userId) {
             const error = new Error('El ID de usuario es obligatorio.');
             error.status = 400;
             throw error;
         }
-        return await loanRepository.findByUserId(userId);
+
+        const type = filters.type || 'all';
+        const history = [];
+
+        if (type === 'all' || type === 'loans') {
+            const loans = await loanRepository.findLoansByUserId(userId, filters);
+            history.push(...loans.map((loan) => ({
+                type: 'loan',
+                date: loan.loanDate,
+                data: loan,
+            })));
+        }
+
+        if (type === 'all' || type === 'reservations') {
+            const reservations = await loanRepository.findReservationsByUserId(userId, filters);
+            history.push(...reservations.map((reservation) => ({
+                type: 'reservation',
+                date: reservation.reservationDate,
+                data: reservation,
+            })));
+        }
+
+        return history.sort((a, b) => String(b.date).localeCompare(String(a.date)));
     }
 }
 

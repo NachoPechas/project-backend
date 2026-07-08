@@ -86,3 +86,14 @@ CREATE TABLE penalty (
   status VARCHAR(50) DEFAULT 'Pendiente',
   created_date DATE DEFAULT CURRENT_DATE
 );
+
+CREATE TABLE audit_log (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES "user"(id),
+  action VARCHAR(100) NOT NULL,
+  entity VARCHAR(100),
+  entity_id INTEGER,
+  details JSONB,
+  ip_address VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
