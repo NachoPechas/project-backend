@@ -158,7 +158,9 @@ async function getDashboardReport() {
     availableSeats,
     occupiedSeats,
     suspendedUsers,
+    activeUsers,
     pendingNotifications,
+    pendingPenaltyAmount,
   ] = await Promise.all([
     Loan.count({ where: { returnDate: null } }),
     Loan.count({ where: { dueDate: { [Op.lt]: today }, returnDate: null } }),
@@ -170,7 +172,9 @@ async function getDashboardReport() {
     StudySeat.count({ where: { status: 'Disponible' } }),
     StudySeat.count({ where: { status: 'Ocupado' } }),
     User.count({ where: { status: 'Suspendido' } }),
+    User.count({ where: { status: 'Activo' } }),
     Notification.count({ where: { status: 'Pendiente' } }),
+    Penalty.sum('amount', { where: { status: 'Pendiente' } }),
   ]);
 
   return {
@@ -194,9 +198,13 @@ async function getDashboardReport() {
     },
     users: {
       suspended: suspendedUsers,
+      active: activeUsers,
     },
     notifications: {
       pending: pendingNotifications,
+    },
+    penalties: {
+      pendingAmount: Number(pendingPenaltyAmount || 0),
     },
   };
 }
