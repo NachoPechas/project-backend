@@ -12,11 +12,11 @@ class LoanService {
         return normalizedStatus.includes('disponible') || normalizedStatus.includes('available');
     }
 
-    /**
-     * Registra el prestamo de un ejemplar a un usuario.
-     * @param {number} userId
-     * @param {number} itemId
-     */
+    
+
+
+
+
     async rentBook(userId, itemId) {
         const item = await itemRepository.findById(itemId);
 
