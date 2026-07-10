@@ -15,14 +15,14 @@ function buildSlotStartDate(reservationDate, startTime) {
   return new Date(`${reservationDate}T${normalizedTime}`);
 }
 
-/**
- * Agenda un puesto de estudio y actualiza su disponibilidad al confirmar.
- * @param {number} userId
- * @param {number} seatId
- * @param {number} slotId
- * @param {string} reservationDate
- * @param {number} tiempoX
- */
+
+
+
+
+
+
+
+
 async function agendarPuesto(userId, seatId, slotId, reservationDate, tiempoX) {
   try {
     return await sequelize.transaction(async (transaction) => {
@@ -105,9 +105,9 @@ async function agendarPuesto(userId, seatId, slotId, reservationDate, tiempoX) {
   }
 }
 
-/**
- * Reduce los contadores de tiempo de los puestos ocupados.
- */
+
+
+
 async function actualizarContadoresTiempo() {
   try {
     const puestosOcupados = await StudySeat.findAll({

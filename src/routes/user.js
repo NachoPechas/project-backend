@@ -8,10 +8,10 @@ const {
 } = require('../middleware/authMiddleware');
 const userController = require('../controllers/userController');
 
-// Registro publico de estudiantes con correo institucional
+
 router.post('/registro', userController.register);
 
-// Obtener todos los usuarios (Solo Administrador)
+
 router.get(
   '/',
   verifyToken,
@@ -29,7 +29,7 @@ router.get(
   }
 );
 
-// Obtener un usuario por ID (Solo Administrador)
+
 router.get(
   '/:id',
   verifyToken,
@@ -59,7 +59,7 @@ router.get(
   }
 );
 
-// Crear usuario (Solo Administrador)
+
 router.post(
   '/',
   verifyToken,
@@ -89,7 +89,7 @@ router.post(
   }
 );
 
-// Actualizar usuario (Solo Administrador)
+
 router.put(
   '/:id',
   verifyToken,
@@ -121,7 +121,7 @@ router.put(
   }
 );
 
-// Eliminar usuario (Solo Administrador)
+
 router.delete(
   '/:id',
   verifyToken,

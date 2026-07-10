@@ -7,7 +7,7 @@ const {
   authorize
 } = require('../middleware/authMiddleware');
 
-// Crear libro (Administrador o Bibliotecario)
+
 router.post(
   '/',
   verifyToken,
@@ -22,7 +22,7 @@ router.post(
   }
 );
 
-// Ver todos los libros (cualquier usuario autenticado)
+
 router.get(
   '/',
   verifyToken,
@@ -41,7 +41,7 @@ router.get(
   }
 );
 
-// Ver un libro por ID (cualquier usuario autenticado)
+
 router.get(
   '/:id',
   verifyToken,

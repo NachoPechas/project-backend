@@ -2,9 +2,9 @@ const Penalty = require('../models/penalty');
 const User = require('../models/user');
 const Loan = require('../models/loan');
 
-// ============================================================================
-// 🔗 DEFINIR LAS ASOCIACIONES (Para que Sequelize entienda las Foreign Keys)
-// ============================================================================
+
+
+
 Penalty.belongsTo(User, { foreignKey: 'user_id' });
 Penalty.belongsTo(Loan, { foreignKey: 'loan_id' }); 
 

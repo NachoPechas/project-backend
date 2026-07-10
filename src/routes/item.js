@@ -8,7 +8,7 @@ const {
 } = require('../middleware/authMiddleware');
 const itemController = require('../controllers/item');
 
-// Listar todos los ejemplares (Administrador o Bibliotecario)
+
 router.get(
   '/',
   verifyToken,
@@ -31,7 +31,7 @@ router.get(
   }
 );
 
-// Crear un ejemplar (Administrador o Bibliotecario)
+
 router.post(
   '/',
   verifyToken,
@@ -54,14 +54,14 @@ router.post(
   }
 );
 
-// Consultar estado de un ejemplar por ID numerico o codigo unico
+
 router.get(
   '/estado/:identifier',
   verifyToken,
   itemController.getItemStatus
 );
 
-// Registrar o actualizar el estado fisico de un ejemplar
+
 router.patch(
   '/:identifier/estado-fisico',
   verifyToken,
@@ -69,7 +69,7 @@ router.patch(
   itemController.updatePhysicalCondition
 );
 
-// Consultar ejemplares de un libro (Todos los usuarios autenticados)
+
 router.get(
   '/libro/:bookId',
   verifyToken,

@@ -1,10 +1,10 @@
 const loanService = require('../services/loanService');
 
 class LoanController {
-    /**
-     * Rentar un libro
-     * POST /api/loans/rent
-     */
+    
+
+
+
     async rentBook(req, res) {
         try {
             const userId = req.user.id;
