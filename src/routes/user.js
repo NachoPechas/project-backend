@@ -8,8 +8,7 @@ const {
 } = require('../middleware/authMiddleware');
 const userController = require('../controllers/userController');
 
-
-router.post('/registro', userController.register);
+router.post('/registro', verifyToken, userController.register);
 
 
 router.get(

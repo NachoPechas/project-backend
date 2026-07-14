@@ -4,28 +4,34 @@ const auditService = require('../services/auditService');
 class UserController {
     async register(req, res) {
         try {
-            const { nombre, email, password } = req.body;
-
-            if (!nombre || !email || !password) {
-                return res.status(400).json({
+            if (!req.user) {
+                return res.status(401).json({
                     success: false,
-                    message: 'Todos los campos (nombre, correo y contrasena) son obligatorios.'
+                    message: 'Debes iniciar sesión para registrar usuarios.'
                 });
             }
 
-            const newUser = await userService.registerStudent({ nombre, email, password });
+            const newUser = await userService.registerStudent({
+                ...req.body,
+                currentUserRoleId: req.user.roleId
+            });
+
             auditService.logAction({
                 userId: newUser.id,
                 action: 'REGISTER_USER',
                 entity: 'User',
                 entityId: newUser.id,
-                details: { email: newUser.email },
+                details: {
+                    email: newUser.email,
+                    roleId: newUser.roleId,
+                    createdBy: req.user.id
+                },
                 ipAddress: req.ip
             }).catch(() => {});
 
             return res.status(201).json({
                 success: true,
-                message: 'Estudiante registrado exitosamente.',
+                message: 'Usuario registrado exitosamente.',
                 data: {
                     id: newUser.id,
                     nombre: newUser.nombre,
@@ -39,7 +45,8 @@ class UserController {
             console.error(`[UserController][register] Error: ${error.message}`);
             return res.status(error.status || 500).json({
                 success: false,
-                message: error.message || 'Error interno en el servidor.'
+                message: error.message || 'Error interno en el servidor.',
+                errors: error.errors || undefined
             });
         }
     }
