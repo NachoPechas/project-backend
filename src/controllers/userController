@@ -1,10 +1,23 @@
 const userService = require('../services/registrerService');
 const auditService = require('../services/auditService');
 
+const DEBUG = true;
+
 class UserController {
     async register(req, res) {
         try {
+            if (DEBUG) {
+                console.log('[UserController] Llegó petición de registro:', {
+                    path: req.originalUrl,
+                    body: req.body ? { ...req.body, password: req.body?.password ? '***' : undefined } : null,
+                    user: req.user ? { id: req.user.id, email: req.user.email, roleId: req.user.roleId } : null,
+                });
+            }
+
             if (!req.user) {
+                if (DEBUG) {
+                    console.log('[UserController] Falló: no hay usuario autenticado.');
+                }
                 return res.status(401).json({
                     success: false,
                     message: 'Debes iniciar sesión para registrar usuarios.'
@@ -29,6 +42,23 @@ class UserController {
                 ipAddress: req.ip
             }).catch(() => {});
 
+            if (DEBUG) {
+                console.log('[UserController] Respuesta exitosa:', {
+                    status: 201,
+                    payload: {
+                        success: true,
+                        message: 'Usuario registrado exitosamente.',
+                        data: {
+                            id: newUser.id,
+                            nombre: newUser.nombre,
+                            email: newUser.email,
+                            roleId: newUser.roleId,
+                            status: newUser.status
+                        }
+                    }
+                });
+            }
+
             return res.status(201).json({
                 success: true,
                 message: 'Usuario registrado exitosamente.',
@@ -42,6 +72,13 @@ class UserController {
             });
 
         } catch (error) {
+            if (DEBUG) {
+                console.log('[UserController] Error capturado:', {
+                    status: error.status || 500,
+                    message: error.message,
+                    errors: error.errors,
+                });
+            }
             console.error(`[UserController][register] Error: ${error.message}`);
             return res.status(error.status || 500).json({
                 success: false,
